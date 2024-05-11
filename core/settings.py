@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from os import getenv
 from django.core.management.utils import get_random_secret_key
 import os
 
@@ -66,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -151,6 +151,26 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "auth.authentication.CustomJWTAuthentication",
     ],
 }
+
+# Djoser
+DJOSER = {
+    "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",
+    "ACTIVATION_URL": "/activate/{uid}/{token}",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SET_PASSWORD_RETYPE": True,
+    "LOGOUT_ON_PASSWORD_CHANGE": True,
+    "TOKEN_MODEL": None,
+}
+
+# Browser cookie
+AUTH_COOKIE_ACCESS = "access"
+AUTH_COOKIE_REFRESH = "refresh"
+AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
+AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SAME_SITE = "None"
+AUTH_COOKIE_HTTPONLY = True
+AUTH_COOKIE_SECURE = os.getenv("AUTH_COOKIE_SECURE", "True") == "True"
+AUTH_COOKIE_PATH = "/"
