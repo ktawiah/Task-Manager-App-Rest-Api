@@ -13,10 +13,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DOTENV_FILE = BASE_DIR / ".env"
+if os.path.isfile(DOTENV_FILE):
+    load_dotenv(DOTENV_FILE)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -39,6 +43,7 @@ THIRD_PARTY_APPS = [
     "jazzmin",
     "corsheaders",
     "djoser",
+    "social_django",
 ]
 
 
@@ -99,6 +104,12 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.github.GithubOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 AUTH_USER_MODEL = "user_auth.User"
 
 
@@ -155,6 +166,10 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Cors Headers
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 # Djoser
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",
@@ -163,14 +178,26 @@ DJOSER = {
     "SET_PASSWORD_RETYPE": True,
     "LOGOUT_ON_PASSWORD_CHANGE": True,
     "TOKEN_MODEL": None,
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv(
+        "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS"
+    ).split(","),
 }
 
 # Browser cookie
-AUTH_COOKIE_ACCESS = "access"
-AUTH_COOKIE_REFRESH = "refresh"
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
 AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
-AUTH_COOKIE_SAME_SITE = "None"
+AUTH_COOKIE_SAME_SITE = None
 AUTH_COOKIE_HTTPONLY = True
 AUTH_COOKIE_SECURE = os.getenv("AUTH_COOKIE_SECURE", "True") == "True"
 AUTH_COOKIE_PATH = "/"
+
+# Social Auth
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+SOCIAL_AUTH_GITHUB_KEY = os.getenv("SOCIAL_AUTH_GITHUB_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = os.getenv("SOCIAL_AUTH_GITHUB_SECRET")
+
+SOCIAL_AUTH_ALLOWED_REDIRECT_URIS = os.getenv(
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS"
+).split(",")
