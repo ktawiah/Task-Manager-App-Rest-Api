@@ -18,9 +18,9 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DOTENV_FILE = BASE_DIR / ".env"
-if os.path.isfile(DOTENV_FILE):
-    load_dotenv(DOTENV_FILE)
+dotenv_file = BASE_DIR / ".env"
+if os.path.isfile(dotenv_file):
+    load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -105,9 +105,9 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.github.GithubOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
 ]
 
 AUTH_USER_MODEL = "user_auth.User"
@@ -178,9 +178,9 @@ DJOSER = {
     "SET_PASSWORD_RETYPE": True,
     "LOGOUT_ON_PASSWORD_CHANGE": True,
     "TOKEN_MODEL": None,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv(
-        "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS"
-    ).split(","),
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv("SOCIAL_AUTH_REDIRECT_URIS").split(
+        ","
+    ),
 }
 
 # Browser cookie
@@ -192,12 +192,15 @@ AUTH_COOKIE_SECURE = os.getenv("AUTH_COOKIE_SECURE", "True") == "True"
 AUTH_COOKIE_PATH = "/"
 
 # Social Auth
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_CLIENT_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPES = [
+    "email",
+    "profile",
+    "openid",
+]
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
+
 
 SOCIAL_AUTH_GITHUB_KEY = os.getenv("SOCIAL_AUTH_GITHUB_KEY")
 SOCIAL_AUTH_GITHUB_SECRET = os.getenv("SOCIAL_AUTH_GITHUB_SECRET")
-
-SOCIAL_AUTH_ALLOWED_REDIRECT_URIS = os.getenv(
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS"
-).split(",")
