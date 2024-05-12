@@ -167,7 +167,7 @@ REST_FRAMEWORK = {
 }
 
 # Cors Headers
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 CORS_ALLOW_CREDENTIALS = True
 
 # Djoser
