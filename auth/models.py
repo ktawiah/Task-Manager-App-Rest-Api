@@ -78,4 +78,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         """Unicode representation of User."""
-        pass
+        return self.email
