@@ -45,4 +45,4 @@ class Task(models.Model):
 
     def __str__(self):
         """Unicode representation of Task."""
-        self.title
+        return self.title
