@@ -100,10 +100,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PSQL_DATABASE_NAME"),
+        "USER": os.getenv("PSQL_DATABASE_USER"),
+        "PASSWORD": os.getenv("PSQL_DATABASE_PASSWORD"),
+        "HOST": os.getenv("PSQL_DATABASE_HOST"),
+        "PORT": os.getenv("PSQL_DATABASE_PORT"),
     }
 }
+
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
