@@ -57,7 +57,7 @@ class Task(models.Model):
 class SubTask(Task):
     """Model definition for SubTask."""
 
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtask")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
 
     class Meta:
         """Meta definition for SubTask."""
