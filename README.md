@@ -1,6 +1,6 @@
-# Task Manager App Backend With Django
+# Task Manager Rest Api With Django
 
-This project is the backend for a task manager app implemented with Django Rest Framework, Djoser for authentication, among others. 
+This project is the backend for a task manager app implemented with Django Rest Framework using Djoser for authentication, among others. 
 
 ## Table of Contents
 - [Features](#features)
