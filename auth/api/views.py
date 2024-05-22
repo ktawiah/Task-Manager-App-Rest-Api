@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.conf import settings
 from rest_framework.views import APIView
 from djoser.social.views import ProviderAuthView
+from rest_framework import status
 
 
 class CustomProviderAuthView(ProviderAuthView):
@@ -106,4 +107,12 @@ class CustomTokenVerifyView(TokenVerifyView):
         return response
 
 
-# class LogoutView(APIView):
+class LogoutView(APIView):
+    def post(self, request: Request, **kwargs):
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+
+        if response:
+            response.delete_cookie("access")
+            response.delete_cookie("refresh")
+
+        return response
