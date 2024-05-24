@@ -44,10 +44,11 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "djoser",
     "social_django",
+    "django_filters",
 ]
 
 
-DEFAULT_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -61,7 +62,7 @@ CUSTOM_APPS = [
     "tasks.apps.TasksConfig",
 ]
 
-INSTALLED_APPS = THIRD_PARTY_APPS + DEFAULT_APPS + CUSTOM_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + CUSTOM_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -169,6 +170,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "auth.authentication.CustomJWTAuthentication",
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
     ],
 }
 

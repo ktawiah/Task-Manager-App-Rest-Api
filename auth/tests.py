@@ -7,6 +7,7 @@ from pytest_drf import (
     Returns201,
     Returns401,
     UsesListEndpoint,
+    AsUser,
 )
 from pytest_drf.util import url_for
 from django.urls import reverse
@@ -19,7 +20,6 @@ fake = Faker()
 
 @pytest.mark.django_db
 class TestRegistrationEndpoint(ViewSetTest):
-    # Test for user registration
     list_url = lambda_fixture(lambda: url_for("user-list"))
 
     class TestList(UsesGetMethod, UsesListEndpoint, Returns401):
@@ -47,3 +47,14 @@ class TestRegistrationEndpoint(ViewSetTest):
             assert actual.get("email") is not None
             assert actual.get("last_name") is not None
             assert actual.get("first_name") is not None
+
+
+@pytest.mark.django_db
+class TestLoginEndpoint(APIViewTest):
+    url = lambda_fixture(lambda: reverse("jwt-create"))
+
+    data = static_fixture({})
+
+    def test_login_success(self, data, json):
+        expected = data
+        actual = json
