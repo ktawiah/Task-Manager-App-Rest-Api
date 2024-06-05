@@ -14,6 +14,7 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,7 @@ THIRD_PARTY_APPS = [
     "djoser",
     "social_django",
     "django_filters",
+    "drf_yasg",
 ]
 
 
@@ -180,6 +182,15 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
 CORS_ALLOW_CREDENTIALS = True
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "TOKEN_OBTAIN_SERIALIZER": "auth.api.serializers.CustomTokenObtainPairSerializer",
+}
+
 # Djoser
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",
@@ -221,3 +232,13 @@ SOCIAL_AUTH_GITHUB_EXTRA_DATA = [
     "first_name",
     "last_name",
 ]
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+        },
+    },
+}

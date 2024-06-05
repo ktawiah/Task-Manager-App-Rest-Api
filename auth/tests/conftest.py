@@ -18,20 +18,24 @@ def api_client():
 
 
 @pytest.fixture
-def register_url():
-    return reverse("user-list")
+def registration_endpoint():
+    url = reverse("user-list")
+    return url
 
 
 @pytest.fixture
-def login_url():
-    return reverse("jwt-create")
+def login_endpoint():
+    url = reverse("jwt_create")
+    return url
 
 
 @pytest.fixture
-def verify_url():
-    return reverse("jwt-verify")
+def refresh_endpoint():
+    url = reverse("jwt_refresh")
+    return url
 
 
 @pytest.fixture
-def refresh_url():
-    return reverse("jwt-refresh")
+def verify_endpoint():
+    url = "jwt_verify"
+    return
