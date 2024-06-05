@@ -15,8 +15,7 @@ from django.core.management.utils import get_random_secret_key
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
-import django_heroku
-import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -179,7 +178,7 @@ REST_FRAMEWORK = {
 }
 
 # Cors Headers
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS").split(",")
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 SIMPLE_JWT = {
@@ -246,5 +245,3 @@ SWAGGER_SETTINGS = {
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-
-django_heroku.settings(locals())
