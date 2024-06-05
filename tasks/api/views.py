@@ -1,14 +1,22 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
+)
 from django.shortcuts import get_object_or_404
 from tasks.models import Task, SubTask
 from .serializers import TaskSerializer, SubTaskSerializer
 from ..pagination import CustomPagination
+from django.contrib.auth.models import AnonymousUser
 
 
 class TasksViewSet(ViewSet):
     def get_queryset(self):
+        if isinstance(self.request.user, AnonymousUser):
+            return Task.objects.none()
         return Task.objects.filter(user=self.request.user)
 
     def list(self, request):
@@ -58,13 +66,15 @@ class TasksViewSet(ViewSet):
 
 class SubTasksViewSet(ViewSet):
     def get_queryset(self):
+        if isinstance(self.request.user, AnonymousUser):
+            return SubTask.objects.none()
         return SubTask.objects.filter(user=self.request.user)
 
     def list(self, request):
         queryset = self.get_queryset()
         paginator = CustomPagination()
         instance = paginator.paginate_queryset(queryset=queryset, request=request)
-        serializer = SubTaskSerializer(queryset, many=True)
+        serializer = SubTaskSerializer(instance, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
 
     def create(self, request):
